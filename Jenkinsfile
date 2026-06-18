@@ -28,7 +28,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
-                sh 'cp target/*.jar /opt/tomcat/webapps/'
+                sh 'mkdir -p /opt/apache-tomcat-7.0.109/webapps'
+                sh 'cp target/*.jar /opt/apache-tomcat-7.0.109/webapps/'
             }
         }
     }
