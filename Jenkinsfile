@@ -6,43 +6,30 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                echo 'Checking out source code...'
                 git 'https://github.com/ganeshgunasekaran0107-devops/Jenkins-Declarative-pipeline-script.git'
             }
         }
 
-        stage('Dependencies') {
+        stage('Build') {
             steps {
-                sh 'flutter pub get'
-            }
-        }
-
-        stage('Analyze') {
-            steps {
-                sh 'flutter analyze'
+                echo 'Building application...'
+                sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'flutter test'
+                echo 'Running tests...'
+                sh 'mvn test'
             }
         }
 
-        stage('Build APK') {
+        stage('Deploy') {
             steps {
-                sh 'flutter build apk'
+                echo 'Deploying application...'
+                sh 'cp target/*.jar /opt/tomcat/webapps/'
             }
-        }
-    }
-
-    post {
-
-        success {
-            echo 'APK Build Successful'
-        }
-
-        failure {
-            echo 'APK Build Failed'
         }
     }
 }
