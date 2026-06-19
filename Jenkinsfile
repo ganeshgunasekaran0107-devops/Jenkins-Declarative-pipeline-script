@@ -6,31 +6,38 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out source code...'
-                git 'https://github.com/ganeshgunasekaran0107-devops/Jenkins-Declarative-pipeline-script.git'
+                echo 'Checking out source code'
             }
         }
 
-        stage('Build') {
+        stage('Build Backend JAR') {
             steps {
-                echo 'Building application...'
-                sh 'mvn clean package'
+                dir('backend') {
+                    sh 'mvn clean package'
+                }
             }
         }
 
-        stage('Test') {
+        stage('Build Frontend WAR') {
             steps {
-                echo 'Running tests...'
-                sh 'mvn test'
+                dir('frontend') {
+                    sh 'mvn clean package'
+                }
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Backend') {
             steps {
-                echo 'Deploying application...'
-                sh 'mkdir -p /opt/apache-tomcat-7.0.109/webapps'
-                sh 'cp target/*.jar /opt/apache-tomcat-7.0.109/webapps/'
+                sh 'mkdir -p /opt/backend'
+                sh 'cp backend/target/*.jar /opt/backend/'
             }
         }
+
+        stage('Deploy Frontend') {
+            steps {
+                sh 'cp frontend/target/*.war /opt/apache-tomcat-7.0.109/webapps/'
+            }
+        }
+
     }
 }
