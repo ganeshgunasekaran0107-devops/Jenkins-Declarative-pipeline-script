@@ -7,6 +7,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out source code'
+                git 'https://github.com/ganeshgunasekaran0107-devops/Jenkins-Declarative-pipeline-script.git'
             }
         }
 
